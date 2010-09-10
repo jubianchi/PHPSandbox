@@ -1,119 +1,96 @@
 <?php
-ini_set('display_errors', 1);
-
-/**
- * Returns the caller function/method
- * For more info about the format, please refer to http://php.net/debug_backtrace
- * 
- * @param string $css
- * @return string
- */
-function CSS2XPath($selector) {
-	$selector = trim($selector);
-	$selector = preg_replace('Ô[ ]{0,1}\+[ ]{0,1}Ô', '/following-sibling::$1', $selector);
-	$selector = preg_replace('Ô[ ]{0,1}\>[ ]{0,1}Ô', '/', $selector);
-	$selector = preg_replace('Ô[ ]{0,1}\,[ ]{0,1}Ô', '__|__//', $selector);
-	$selector = preg_replace('Ô[ ]{1}Ô', '//', $selector);
+class CSS2XPath {
+	public static $classes = 0;
 	
-	$selector = preg_replace('Ô\[([A-Za-z0-9\-_]*)=([A-Za-z0-9\-_]*)\]Ô', '[@$1="$2"]', $selector);
-	$selector = preg_replace('Ô\[([A-Za-z0-9\-_]*)~=([A-Za-z0-9\-_]*)\]Ô', '[contains(concat(" ", @$1, " "),concat(" ", "$2", " "))]', $selector);
-	$selector = preg_replace('Ô\[([A-Za-z0-9\-_]*)|=([A-Za-z0-9\-_]*)\]Ô', '[@$1="$2" or starts-with(@$1, concat("$2", "-"))]', $selector);
-	$selector = preg_replace('Ô\[([A-Za-z0-9\-_]*)\*=([A-Za-z0-9\-_]*)\]Ô', '[contains(@$1, "$2")]', $selector);
-	$selector = preg_replace('Ô\[([A-Za-z0-9\-_]*)\]Ô', '[@$1]', $selector);
+	private static function axes($selector) {
+		$selector = trim($selector);
+		
+		$selector = str_replace(' + ', '+', $selector);
+		$selector = str_replace(' > ', '>', $selector);
+		
+		$selector = preg_replace('Ô\+Ô', '/following-sibling::', $selector);
+		$selector = preg_replace('Ô\>Ô', '/', $selector);
+		
+		return $selector;
+	}
 	
-	$selector = preg_replace_callback('Ô([A-Za-z0-9\-_]?)\.([A-Za-z0-9\-_]*)Ô', function($m) {
-		return ($m[1] == '' ? '*' : $m[1]) . '[contains(concat(" ", @class, " "),concat(" ", "' . $m[2] . '", " "))]';
-	}, $selector);
+	private static function attributes($selector) {
+		$selector = trim($selector);
+		
+		$selector = preg_replace('Ô\[([A-Za-z0-9\-_]*)=([A-Za-z0-9\-_]*)\]Ô', '[@$1="$2"]', $selector);
+		$selector = preg_replace('Ô\[([A-Za-z0-9\-_]*)\~=([A-Za-z0-9\-_]*)\]Ô', '[contains(concat(" ", @$1, " "),concat(" ", "$2", " "))]', $selector);
+		$selector = preg_replace('Ô\[([A-Za-z0-9\-_]*)\|=([A-Za-z0-9\-_]*)\]Ô', '[@$1="$2" or starts-with(@$1, concat("$2", "-"))]', $selector);
+		$selector = preg_replace('Ô\[([A-Za-z0-9\-_]*)\*=([A-Za-z0-9\-_]*)\]Ô', '[contains(@$1, "$2")]', $selector);
+		$selector = preg_replace('Ô\[([A-Za-z0-9\-_]*)\]Ô', '[@$1]', $selector);
+		
+		return $selector;
+	}
 	
-	$selector = preg_replace_callback('Ô([A-Za-z0-9\-_]?)\#([A-Za-z0-9\-_]*)Ô', function($m) {
-		return ($m[1] == '' ? '*' : $m[1]) . '[@id="' . $m[2] . '"]';
-	}, $selector);
+	public function ids($selector) {
+		$selector = trim($selector);
+		
+		$selector = preg_replace_callback('Ô([A-Za-z0-9\-_]?)\#([A-Za-z0-9\-_]*)Ô', function($m) {
+			return ($m[1] == '' ? '*' : $m[1]) . '[@id="' . $m[2] . '"]';
+		}, $selector);
+		
+		return $selector;
+	}
 	
-	$selector = preg_replace('Ô:nth\-child\(([0-9]*)\)Ô', '[$1]', $selector);
-	$selector = preg_replace('Ô:eq\(([0-9]*)\)Ô', '[$1]', $selector);
-	$selector = preg_replace('Ô:first\-childÔ', '[1]', $selector);
-	$selector = preg_replace('Ô:firstÔ', '[1]', $selector);
-	$selector = preg_replace('Ô:last\-childÔ', '[last()]', $selector);
-	$selector = preg_replace('Ô:lastÔ', '[last()]', $selector);
-	$selector = preg_replace('Ô:linkÔ', '[@href]', $selector);
+	public static function classes($selector) {
+		$selector = trim($selector);
+		
+		$selector = preg_replace_callback('Ô([A-Za-z0-9\-_]*){0,1}(\.([A-Za-z0-9\-_]*))Ô', function($m) {
+			$ret = false;
+			
+			if(isset($m[3])) {
+				if(CSS2XPath::$classes == 0) $ret .= ($m[1] == '' ? '*' : $m[1]);
+				
+				$ret .= '[contains(concat(" ", @class, " "),concat(" ", "' . $m[3] . '", " "))]';
+				CSS2XPath::$classes++;
+			}
+			
+			return $ret;
+		}, $selector);
+		
+		return $selector;
+	}
 	
-	$selector = '//' . str_replace('__', ' ', $selector);
+	public static function pclasses($selector) {
+		$selector = trim($selector);
+		
+		$selector = preg_replace('Ô\:nth\-child\(([0-9]*)\)Ô', '[$1]', $selector);
+		$selector = preg_replace('Ô\:eq\(([0-9]*)\)Ô', '[$1]', $selector);
+		$selector = preg_replace('Ô\:first\-childÔ', '[1]', $selector);
+		$selector = preg_replace('Ô\:firstÔ', '[1]', $selector);
+		$selector = preg_replace('Ô\:last\-childÔ', '[last()]', $selector);
+		$selector = preg_replace('Ô\:lastÔ', '[last()]', $selector);
+		$selector = preg_replace_callback('Ô([A-Za-z0-9\-_]?)\:linkÔ', function($m) {
+			return ($m[1] == '' ? '*' : $m[1]) . '[@href]';
+		}, $selector);
+		//$selector = preg_replace('Ô:inputÔ', CSS2XPath('input, select, textarea, button'), $selector);
+		
+		return $selector;
+	}
 	
-	return $selector;
+	public static function parse($selector) {
+		$selector = trim($selector);
+		$selectors = explode(',', $selector);
+		
+		foreach($selectors as $k => $selector) {
+			$selector = '//' . trim($selector);
+			
+			$selector = self::axes($selector);
+			$selector = self::attributes($selector);
+			$selector = self::pclasses($selector);
+			$selector = self::ids($selector);
+			static::$classes = 0;
+			$selector = self::classes($selector);
+			$selector = str_replace(' ', '//', $selector);
+			$selectors[$k] = $selector;
+		}
+		
+		$selector = implode(' | ', $selectors);
+		return $selector;
+	}
 }
-
-echo '<pre>';
-echo CSS2XPath('body');
-echo "\n";
-echo CSS2XPath('.aclass');
-echo "\n";
-echo CSS2XPath('#anid');
-echo "\n";
-echo CSS2XPath('p.aclass');
-echo "\n";
-echo CSS2XPath('p#anid');
-echo "\n\n";
-
-echo CSS2XPath('body p');
-echo "\n";
-echo CSS2XPath('body .aclass');
-echo "\n";
-echo CSS2XPath('body #anid');
-echo "\n";
-echo CSS2XPath('body p.aclass');
-echo "\n";
-echo CSS2XPath('body p#anid');
-echo "\n\n";
-
-echo CSS2XPath('body + p');
-echo "\n";
-echo CSS2XPath('body + .aclass');
-echo "\n";
-echo CSS2XPath('body + #anid');
-echo "\n";
-echo CSS2XPath('body + p.aclass');
-echo "\n";
-echo CSS2XPath('body + p#anid');
-echo "\n\n";
-
-
-echo CSS2XPath('body > p');
-echo "\n";
-echo CSS2XPath('body > .aclass');
-echo "\n";
-echo CSS2XPath('body > #anid');
-echo "\n";
-echo CSS2XPath('body > p.aclass');
-echo "\n";
-echo CSS2XPath('body > p#anid');
-echo "\n\n";
-
-echo CSS2XPath('a[href]');
-echo "\n";
-echo CSS2XPath('input[type=text]');
-echo "\n";
-
-$html = <<<EOT
-<html>
-<head>
-	<title>A Test Title</title>
-</head>
-
-<body>
-	<p>A test paragraph</p>
-	
-	<p class="form-entry form-entry-test">
-		<label for="txtTest">A test label</label>
-		<input type="text" name="txtTest" id="txtTest" />
-	</p>
-</body>
-</html>
-EOT;
-
-$dom = new DOMDocument();
-$dom -> loadHTML($html);
-
-$x = new DOMXPath($dom);
-echo CSS2XPath('body .form-entry');
-var_dump($x -> query(CSS2XPath('body .form-entry')) -> length);
 ?>
