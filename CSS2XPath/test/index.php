@@ -1,4 +1,10 @@
 <?php
+/**
+ * Copyright 2010 jubianchi.fr
+ * 
+ * @author jubianchi
+ */
+
 ini_set('display_errors', 1);
 
 $url = null;

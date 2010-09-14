@@ -1,4 +1,10 @@
 <?php
+/**
+ * Copyright 2010 jubianchi.fr
+ * 
+ * @author jubianchi
+ */
+
 class CSS2XPath {
 	public static $classes = 0;
 	

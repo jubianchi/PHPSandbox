@@ -1,31 +1,38 @@
 <?php
-ini_set('display_errors', 1);
+/**
+ * Copyright 2010 jubianchi.fr
+ * 
+ * @author jubianchi
+ */
 
 class Caller {
-	public static function get($offset = 0) {
-		/*$trace = debug_backtrace(false);
-		//$trace = self::trace($offset - 1);
+	//Region "Private Props"
+	private $_class_    = null;
+	private $_name_     = null;
+	private $_args_     = array();
+	private $_instance_ = null;
+	private $_method_   = false;
+	private $_function_ = false;
+	private $_static_   = false;
+	private $_file_     = null;
+	private $_line_     = null;
+	//Endregion
+	
+	//Region "Static Methods"
+	public static function get($offset = 0) {		
+		$trace = self::trace($offset);
+		return !isset($trace[0]) ? null : $trace[0];
+	}
+	
+	public static function instance($offset = 0) {
+		if(!self::isClassMethod()) return null;
 		
-		$level = 0;
-		while(@$trace[$level]['class'] == 'Caller') {
-			$level++;
-		}
-		if($offset > 0) $level += $offset;
-		
-		if(isset($trace[$level])) {
-			$caller = $trace[$level];
-			
-			return $caller;
-		}
-		
-		return null;*/
-		
-		$trace = self::trace();
-		return !isset($trace[$offset]) ? null : $trace[$offset];
+		$caller = self::get($offset);
+		return isset($caller['object']) ? $caller['object'] : null;
 	}
 	
 	public function trace($offset = 0) {
-		$trace = debug_backtrace(false);
+		$trace = debug_backtrace(true);
 
 		$level = 0;
 		while(@$trace[$level]['class'] == 'Caller') {
@@ -36,19 +43,19 @@ class Caller {
 		
 		if($offset > 0) $level += $offset;
 		
-		return !empty($trace) ? array_values($trace) : null;
+		return !empty($trace) ? self::castTrace(array_values($trace)) : null;
 	}
 	
 	public static function isClassMethod() {
 		$caller = self::get(1);
 		
-		return isset($caller['class']);	
+		return ($caller != null && $caller -> _method_);	
 	}
 	
 	public static function isFunction() {
 		$caller = self::get(1);
-		
-		return !isset($caller['class']);	
+
+		return ($caller != null && $caller -> _function_);	
 	}
 	
 	public static function isInstanceOf($class) {
@@ -57,41 +64,57 @@ class Caller {
 		if(is_object($class)) $class = get_class($class);
 		$caller = self::get(1);
 		
-		return ($caller['class'] == $class);
+		return ($caller -> _instance_ instanceof  $class);
 	}
-}
-
-function foo() {
-	var_dump(Caller::get());
-	var_dump(Caller::trace());
-}
-function bar() {
-	foo();	
-}
-
-
-class Buz {
-	function foo() {
-		foo();
+	//Endregion
+	
+	//Region "Private Methods"
+	private static function cast(array $caller) {
+		$obj = new Caller();
+		
+		$obj -> _file_ = $caller['file'];
+		$obj -> _line_ = $caller['line'];
+		$obj -> _name_ = $caller['function'];
+		$obj -> _args_ = $caller['args'];
+		
+		if(isset($caller['class'])) {
+			$obj -> _method_ = true;
+			$obj -> _class_  = $caller['class'];
+			
+			if(isset($caller['type'])) {
+				switch($caller['type']) {
+					case '->': 
+						$obj -> _static_ = false; 
+						
+						$obj -> _instance_ = $caller['object'];
+					break;
+					case '::': $obj -> _static_ = true;  break;
+				}
+			}
+		} else {
+			$obj -> _function_ = true;
+		}
+		
+		return $obj;
 	}
-	function bar() {
-		$b = new Baz();
-		$b -> bar();
+	
+	private static function castTrace(array $trace) {
+		$arr = array();
+		
+		foreach($trace as $caller) {
+			$arr[] = self::cast($caller);
+		}
+		
+		return $arr;
 	}
+	
+	private function __construct() {
+	}
+	
+	public function __get($name) {
+		if(isset($this -> {'_' . $name . '_'})) return $this -> {'_' . $name . '_'};
+		return null;
+	}
+	//Endregion
 }
-class Baz {
-	function foo() {
-		foo();
-	}
-	function bar() {
-		bar();
-	}
-}
-
-echo '<pre>';
-var_dump(Caller::get());
-
-$baz = new Buz();
-$baz -> bar();
-echo '</pre>';
 ?>
