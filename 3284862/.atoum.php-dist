@@ -1,0 +1,33 @@
+<?php
+use \mageekguy\atoum;
+
+define('COVERAGE_TITLE', 'Config');
+define('COVERAGE_DIRECTORY', './coverage');
+define('COVERAGE_WEB_PATH', 'http://%host%/coverage');
+
+if(false === is_dir(COVERAGE_DIRECTORY)) 
+{
+    mkdir(COVERAGE_DIRECTORY, 0777, true);
+}
+
+$coverageField = new atoum\report\fields\runner\coverage\html(COVERAGE_TITLE, COVERAGE_DIRECTORY);
+$coverageField->setRootUrl(COVERAGE_WEB_PATH);
+
+$stdOutWriter = new atoum\writers\std\out();
+$cliReport = new atoum\reports\realtime\cli();
+$cliReport
+    ->addWriter($stdOutWriter)
+    ->addField($coverageField, array(atoum\runner::runStop))
+;
+
+$xunitFileWriter = new atoum\writers\file('atoum.xml');
+$xunit = new atoum\reports\asynchronous\xunit();
+$xunit->addWriter($xunitFileWriter);
+
+$cloverFileWriter = new atoum\writers\file('atoum.coverage.xml');
+$clover = new atoum\reports\asynchronous\clover();
+$clover->addWriter($cloverFileWriter);
+
+$runner->addReport($cliReport);
+$runner->addReport($clover);
+$runner->addReport($xunit);

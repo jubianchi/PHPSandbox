@@ -1,0 +1,26 @@
+{
+    "hash": "709c1a146f21274a7a6253c4a07e795e",
+    "packages": [
+        {
+            "package": "symfony/config",
+            "version": "dev-master",
+            "source-reference": "v2.1.0-RC1",
+            "commit-date": "1343512949"
+        }
+    ],
+    "packages-dev": [
+        {
+            "package": "mageekguy/atoum",
+            "version": "dev-master",
+            "source-reference": "8ff37c48b558a33ce9cdfa252937e8ca08713364",
+            "commit-date": "1343308831"
+        }
+    ],
+    "aliases": [
+
+    ],
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "mageekguy/atoum": 20
+    }
+}

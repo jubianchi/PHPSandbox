@@ -1,0 +1,23 @@
+{
+    "name": "sandbox",
+    "type": "script",
+    "description": "PHP Sandbox",
+    "authors": [
+        {
+            "name": "Julien Bianchi",
+            "email": "contact@jubianchi.fr",
+            "homepage": "http://jubianchi.fr"
+        }
+    ],
+    "autoload": {
+        "psr-0": { "jubianchi": "src/" }
+    },
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.3.2",        
+        "symfony/config": "*"
+    },
+    "require-dev": {
+        "mageekguy/atoum": "dev-master"
+    }
+}
