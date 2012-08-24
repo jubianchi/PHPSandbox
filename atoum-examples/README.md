@@ -55,7 +55,7 @@ namespace {
 ~~~
 
 ~~~shell
-$ bin/atoum -d tests/listing/1.php
+$ bin/atoum -f tests/listing/1.php
 
 > tests\unit\Ftp...
 [S___________________________________________________________][1/1]
@@ -148,7 +148,7 @@ class Ftp extends atoum\test {
 ~~~
 
 ~~~shell
-$ bin/atoum -d tests/listing/2-3.php
+$ bin/atoum -f tests/listing/2-3.php
 
 > tests\unit\Ftp...
 [S___________________________________________________________][1/1]
@@ -250,7 +250,7 @@ class Ftp
 ~~~
 
 ~~~shell
-$ bin/atoum -d tests/listing/4-5.php
+$ bin/atoum -f tests/listing/4-5.php
 
 > tests\unit\Ftp...
 [S___________________________________________________________][1/1]
