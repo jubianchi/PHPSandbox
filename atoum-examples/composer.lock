@@ -1,0 +1,14 @@
+{
+    "hash": "3f01691ca6188f8897b80b870d0d1070",
+    "packages": [
+
+    ],
+    "packages-dev": null,
+    "aliases": [
+
+    ],
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "mageekguy/atoum": 20
+    }
+}
