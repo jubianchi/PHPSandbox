@@ -6,7 +6,9 @@ Nous avons récemment eu quelques discussions sur les ```Adapters``` sur le salo
 
 Avant de commencer, nous allons faire un petit rappel sur le design pattern ```Adapter```. Voici un extrait de la définition donnée par Wikipedia :
 
-"The adapter translates calls to its interface into calls to the original interface, and the amount of code necessary to do this is typically small."
+> The adapter translates calls to its interface into calls to the original interface, and the amount of code necessary to do this is typically small.
+>
+> — [Wikipedia - Adapter Pattern](http://en.wikipedia.org/wiki/Adapter_pattern)
 
 Cette définition nous dit que l'```Adapter``` traduit des appels d'une interface vers une autre avec un minimum de code. En d'autres termes, elle n'est qu'un proxy.
 
