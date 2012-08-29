@@ -1,5 +1,5 @@
 <?php
-namespace jubianchi\Ftp;
+namespace jubianchi\Ftp\Adapter;
 
 use
     jubianchi\Adapter\Adapter as BaseAdapter

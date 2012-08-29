@@ -32,7 +32,7 @@ class Ftp extends Adaptable
      */
     public function getAdapter()
     {
-        return $this->adapter ?: new Adapter();
+        return $this->adapter ?: new Adapter\Adapter();
     }
 
     /**

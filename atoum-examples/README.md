@@ -264,3 +264,11 @@ $ bin/atoum -f tests/listing/4-5.php
 ~~~
 
 Comme vous pouvez le voir, la dépendance vers _atoum_ a disparue de notre code de production ! Nous sommes maintenant dépendant de notre ```Adapterinterface``` et de l'implémentation par défaut que nous avons ajoutée.
+
+### Attention aux performances
+
+Nous avons vu dans l'exemple précédent comment découpler facilement nos adapters du framework de test. Pour cela, nous avons mis en place une interface
+au sein de notre projet : désormais, toutes nos classes nécessitant un adapter peuvent se reposer sur cette interface. Nous avons également mis en place une implémentation
+par défaut afin de répondre à un maximum de besoin rapidement et avec un minimum de code (souvenez-vous de la définition de Wikipedia).
+
+Cette implémentation a un inconvénient majeure : afin de combler un maximum de besoin, cette classe se base sur la fonction PHP ```call_user_func_array```.
