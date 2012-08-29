@@ -21,43 +21,46 @@ foreach(new IteratorIterator($iterator) as $file) {
 }
 
 printf(
-    '+-%s-+-%s-+----------+----------+---------------------+' . PHP_EOL,
-    str_pad('',  40, '-'),
-    str_pad('',  40, '-')
+    '+-%s-+-%s-+--------------+--------------+-----------------------+' . PHP_EOL,
+    str_pad('',  35, '-'),
+    str_pad('',  35, '-')
 );
 
 printf(
-    '| %40s VS %39s | %8s | %8s | %s |' . PHP_EOL,
-    '',
-    '',
+    '| %35s VS %-34s | %12s | %12s | %s |' . PHP_EOL,
     'X',
     'Y',
-    '(1 - (Y / X)) * 100'
+    'X_ = AVG(X)',
+    'Y_ = AVG(Y)',
+    '(1 - (Y_ / X_)) * 100'
 );
 
 printf(
-    '+-%s-+-%s-+----------+----------+---------------------+' . PHP_EOL,
-    str_pad('',  40, '-'),
-    str_pad('',  40, '-')
+    '+-%s-+-%s-+--------------+--------------+-----------------------+' . PHP_EOL,
+    str_pad('',  35, '-'),
+    str_pad('',  35, '-')
 );
 
 foreach($global_bench as $case => $average) {
     foreach($global_bench as $case_comp => $average_comp) {
+        $case = basename($case, '.php');
+        $case_comp = basename($case_comp, '.php');
+
         if($case !== $case_comp) {
             printf(
-                '| %40s | %40s | %.5fs | %.5fs | %18s%% |' . PHP_EOL,
+                '| %35s | %35s | %11ss | %11ss | %20s%% |' . PHP_EOL,
                 $case,
                 $case_comp,
-                $average,
-                $average_comp,
+                round($average, 5),
+                round($average_comp, 5),
                 round((1 - ($average_comp / $average)) * 100, 2)
             );
         }
     }
 
     printf(
-        '+-%s-+-%s-+----------+----------+---------------------+' . PHP_EOL,
-        str_pad('',  40, '-'),
-        str_pad('',  40, '-')
+        '+-%s-+-%s-+--------------+--------------+-----------------------+' . PHP_EOL,
+        str_pad('',  35, '-'),
+        str_pad('',  35, '-')
     );
 }

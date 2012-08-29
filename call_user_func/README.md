@@ -2,90 +2,90 @@
 $ php -v
 PHP 5.3.15-pmsipilot009 with Suhosin-Patch (cli) (built: Jul 27 2012 11:56:28)
 
-$ php bench.php 1000
-+------------------------------------------+------------------------------------------+----------+----------+---------------------+
-|                                          VS                                         |        X |        Y | (1 - (Y / X)) * 100 |
-+------------------------------------------+------------------------------------------+----------+----------+---------------------+
-|   call_user_func_array_through_class.php |                       call_user_func.php | 0.20260s | 0.19854s |               2.01% |
-|   call_user_func_array_through_class.php |                          call_direct.php | 0.20260s | 0.20095s |               0.82% |
-|   call_user_func_array_through_class.php |            call_direct_through_class.php | 0.20260s | 0.19847s |               2.04% |
-|   call_user_func_array_through_class.php |                 call_user_func_array.php | 0.20260s | 0.20840s |              -2.86% |
-|   call_user_func_array_through_class.php |         call_user_func_through_class.php | 0.20260s | 0.20078s |                0.9% |
-+------------------------------------------+------------------------------------------+----------+----------+---------------------+
-|                       call_user_func.php |   call_user_func_array_through_class.php | 0.19854s | 0.20260s |              -2.05% |
-|                       call_user_func.php |                          call_direct.php | 0.19854s | 0.20095s |              -1.22% |
-|                       call_user_func.php |            call_direct_through_class.php | 0.19854s | 0.19847s |               0.03% |
-|                       call_user_func.php |                 call_user_func_array.php | 0.19854s | 0.20840s |              -4.97% |
-|                       call_user_func.php |         call_user_func_through_class.php | 0.19854s | 0.20078s |              -1.13% |
-+------------------------------------------+------------------------------------------+----------+----------+---------------------+
-|                          call_direct.php |   call_user_func_array_through_class.php | 0.20095s | 0.20260s |              -0.82% |
-|                          call_direct.php |                       call_user_func.php | 0.20095s | 0.19854s |                1.2% |
-|                          call_direct.php |            call_direct_through_class.php | 0.20095s | 0.19847s |               1.24% |
-|                          call_direct.php |                 call_user_func_array.php | 0.20095s | 0.20840s |              -3.71% |
-|                          call_direct.php |         call_user_func_through_class.php | 0.20095s | 0.20078s |               0.09% |
-+------------------------------------------+------------------------------------------+----------+----------+---------------------+
-|            call_direct_through_class.php |   call_user_func_array_through_class.php | 0.19847s | 0.20260s |              -2.08% |
-|            call_direct_through_class.php |                       call_user_func.php | 0.19847s | 0.19854s |              -0.03% |
-|            call_direct_through_class.php |                          call_direct.php | 0.19847s | 0.20095s |              -1.25% |
-|            call_direct_through_class.php |                 call_user_func_array.php | 0.19847s | 0.20840s |                 -5% |
-|            call_direct_through_class.php |         call_user_func_through_class.php | 0.19847s | 0.20078s |              -1.16% |
-+------------------------------------------+------------------------------------------+----------+----------+---------------------+
-|                 call_user_func_array.php |   call_user_func_array_through_class.php | 0.20840s | 0.20260s |               2.78% |
-|                 call_user_func_array.php |                       call_user_func.php | 0.20840s | 0.19854s |               4.73% |
-|                 call_user_func_array.php |                          call_direct.php | 0.20840s | 0.20095s |               3.57% |
-|                 call_user_func_array.php |            call_direct_through_class.php | 0.20840s | 0.19847s |               4.77% |
-|                 call_user_func_array.php |         call_user_func_through_class.php | 0.20840s | 0.20078s |               3.66% |
-+------------------------------------------+------------------------------------------+----------+----------+---------------------+
-|         call_user_func_through_class.php |   call_user_func_array_through_class.php | 0.20078s | 0.20260s |              -0.91% |
-|         call_user_func_through_class.php |                       call_user_func.php | 0.20078s | 0.19854s |               1.12% |
-|         call_user_func_through_class.php |                          call_direct.php | 0.20078s | 0.20095s |              -0.09% |
-|         call_user_func_through_class.php |            call_direct_through_class.php | 0.20078s | 0.19847s |               1.15% |
-|         call_user_func_through_class.php |                 call_user_func_array.php | 0.20078s | 0.20840s |               -3.8% |
-+------------------------------------------+------------------------------------------+----------+----------+---------------------+
+$ php bench.php 10000
++-------------------------------------+-------------------------------------+--------------+--------------+-----------------------+
+|                                   X VS Y                                  |  X_ = AVG(X) |  Y_ = AVG(Y) | (1 - (Y_ / X_)) * 100 |
++-------------------------------------+-------------------------------------+--------------+--------------+-----------------------+
+|  call_user_func_array_through_class |                      call_user_func |      0.0002s |     0.00019s |                 3.76% |
+|  call_user_func_array_through_class |                         call_direct |      0.0002s |     0.00019s |                 5.35% |
+|  call_user_func_array_through_class |           call_direct_through_class |      0.0002s |      0.0002s |                 0.81% |
+|  call_user_func_array_through_class |                call_user_func_array |      0.0002s |     0.00019s |                 1.76% |
+|  call_user_func_array_through_class |        call_user_func_through_class |      0.0002s |      0.0002s |                -0.61% |
++-------------------------------------+-------------------------------------+--------------+--------------+-----------------------+
+|                      call_user_func |  call_user_func_array_through_class |     0.00019s |      0.0002s |                 -3.9% |
+|                      call_user_func |                         call_direct |     0.00019s |     0.00019s |                 1.66% |
+|                      call_user_func |           call_direct_through_class |     0.00019s |      0.0002s |                -3.06% |
+|                      call_user_func |                call_user_func_array |     0.00019s |     0.00019s |                -2.07% |
+|                      call_user_func |        call_user_func_through_class |     0.00019s |      0.0002s |                -4.53% |
++-------------------------------------+-------------------------------------+--------------+--------------+-----------------------+
+|                         call_direct |  call_user_func_array_through_class |     0.00019s |      0.0002s |                -5.66% |
+|                         call_direct |                      call_user_func |     0.00019s |     0.00019s |                -1.69% |
+|                         call_direct |           call_direct_through_class |     0.00019s |      0.0002s |                -4.79% |
+|                         call_direct |                call_user_func_array |     0.00019s |     0.00019s |                -3.79% |
+|                         call_direct |        call_user_func_through_class |     0.00019s |      0.0002s |                -6.29% |
++-------------------------------------+-------------------------------------+--------------+--------------+-----------------------+
+|           call_direct_through_class |  call_user_func_array_through_class |      0.0002s |      0.0002s |                -0.82% |
+|           call_direct_through_class |                      call_user_func |      0.0002s |     0.00019s |                 2.97% |
+|           call_direct_through_class |                         call_direct |      0.0002s |     0.00019s |                 4.58% |
+|           call_direct_through_class |                call_user_func_array |      0.0002s |     0.00019s |                 0.96% |
+|           call_direct_through_class |        call_user_func_through_class |      0.0002s |      0.0002s |                -1.43% |
++-------------------------------------+-------------------------------------+--------------+--------------+-----------------------+
+|                call_user_func_array |  call_user_func_array_through_class |     0.00019s |      0.0002s |                 -1.8% |
+|                call_user_func_array |                      call_user_func |     0.00019s |     0.00019s |                 2.03% |
+|                call_user_func_array |                         call_direct |     0.00019s |     0.00019s |                 3.65% |
+|                call_user_func_array |           call_direct_through_class |     0.00019s |      0.0002s |                -0.97% |
+|                call_user_func_array |        call_user_func_through_class |     0.00019s |      0.0002s |                -2.41% |
++-------------------------------------+-------------------------------------+--------------+--------------+-----------------------+
+|        call_user_func_through_class |  call_user_func_array_through_class |      0.0002s |      0.0002s |                  0.6% |
+|        call_user_func_through_class |                      call_user_func |      0.0002s |     0.00019s |                 4.34% |
+|        call_user_func_through_class |                         call_direct |      0.0002s |     0.00019s |                 5.92% |
+|        call_user_func_through_class |           call_direct_through_class |      0.0002s |      0.0002s |                 1.41% |
+|        call_user_func_through_class |                call_user_func_array |      0.0002s |     0.00019s |                 2.36% |
++-------------------------------------+-------------------------------------+--------------+--------------+-----------------------+
 ```
 
 ```shell
 $ php -v
 PHP 5.4.3 (cli) (built: May 22 2012 15:05:55)
 
-$ php bench.php 1000
-+------------------------------------------+------------------------------------------+----------+----------+---------------------+
-|                                          VS                                         |        X |        Y | (1 - (Y / X)) * 100 |
-+------------------------------------------+------------------------------------------+----------+----------+---------------------+
-|   call_user_func_array_through_class.php |                       call_user_func.php | 0.18868s | 0.18712s |               0.82% |
-|   call_user_func_array_through_class.php |                          call_direct.php | 0.18868s | 0.18268s |               3.18% |
-|   call_user_func_array_through_class.php |            call_direct_through_class.php | 0.18868s | 0.18623s |                1.3% |
-|   call_user_func_array_through_class.php |                 call_user_func_array.php | 0.18868s | 0.19267s |              -2.12% |
-|   call_user_func_array_through_class.php |         call_user_func_through_class.php | 0.18868s | 0.18773s |                0.5% |
-+------------------------------------------+------------------------------------------+----------+----------+---------------------+
-|                       call_user_func.php |   call_user_func_array_through_class.php | 0.18712s | 0.18868s |              -0.83% |
-|                       call_user_func.php |                          call_direct.php | 0.18712s | 0.18268s |               2.38% |
-|                       call_user_func.php |            call_direct_through_class.php | 0.18712s | 0.18623s |               0.48% |
-|                       call_user_func.php |                 call_user_func_array.php | 0.18712s | 0.19267s |              -2.96% |
-|                       call_user_func.php |         call_user_func_through_class.php | 0.18712s | 0.18773s |              -0.32% |
-+------------------------------------------+------------------------------------------+----------+----------+---------------------+
-|                          call_direct.php |   call_user_func_array_through_class.php | 0.18268s | 0.18868s |              -3.28% |
-|                          call_direct.php |                       call_user_func.php | 0.18268s | 0.18712s |              -2.43% |
-|                          call_direct.php |            call_direct_through_class.php | 0.18268s | 0.18623s |              -1.94% |
-|                          call_direct.php |                 call_user_func_array.php | 0.18268s | 0.19267s |              -5.47% |
-|                          call_direct.php |         call_user_func_through_class.php | 0.18268s | 0.18773s |              -2.76% |
-+------------------------------------------+------------------------------------------+----------+----------+---------------------+
-|            call_direct_through_class.php |   call_user_func_array_through_class.php | 0.18623s | 0.18868s |              -1.31% |
-|            call_direct_through_class.php |                       call_user_func.php | 0.18623s | 0.18712s |              -0.48% |
-|            call_direct_through_class.php |                          call_direct.php | 0.18623s | 0.18268s |               1.91% |
-|            call_direct_through_class.php |                 call_user_func_array.php | 0.18623s | 0.19267s |              -3.46% |
-|            call_direct_through_class.php |         call_user_func_through_class.php | 0.18623s | 0.18773s |               -0.8% |
-+------------------------------------------+------------------------------------------+----------+----------+---------------------+
-|                 call_user_func_array.php |   call_user_func_array_through_class.php | 0.19267s | 0.18868s |               2.07% |
-|                 call_user_func_array.php |                       call_user_func.php | 0.19267s | 0.18712s |               2.88% |
-|                 call_user_func_array.php |                          call_direct.php | 0.19267s | 0.18268s |               5.19% |
-|                 call_user_func_array.php |            call_direct_through_class.php | 0.19267s | 0.18623s |               3.34% |
-|                 call_user_func_array.php |         call_user_func_through_class.php | 0.19267s | 0.18773s |               2.57% |
-+------------------------------------------+------------------------------------------+----------+----------+---------------------+
-|         call_user_func_through_class.php |   call_user_func_array_through_class.php | 0.18773s | 0.18868s |              -0.51% |
-|         call_user_func_through_class.php |                       call_user_func.php | 0.18773s | 0.18712s |               0.32% |
-|         call_user_func_through_class.php |                          call_direct.php | 0.18773s | 0.18268s |               2.69% |
-|         call_user_func_through_class.php |            call_direct_through_class.php | 0.18773s | 0.18623s |                0.8% |
-|         call_user_func_through_class.php |                 call_user_func_array.php | 0.18773s | 0.19267s |              -2.63% |
-+------------------------------------------+------------------------------------------+----------+----------+---------------------+
+$ php bench.php 10000
++-------------------------------------+-------------------------------------+--------------+--------------+-----------------------+
+|                                   X VS Y                                  |  X_ = AVG(X) |  Y_ = AVG(Y) | (1 - (Y_ / X_)) * 100 |
++-------------------------------------+-------------------------------------+--------------+--------------+-----------------------+
+|  call_user_func_array_through_class |                      call_user_func |     0.00018s |     0.00018s |                  0.6% |
+|  call_user_func_array_through_class |                         call_direct |     0.00018s |     0.00018s |                -0.16% |
+|  call_user_func_array_through_class |           call_direct_through_class |     0.00018s |     0.00019s |                -1.73% |
+|  call_user_func_array_through_class |                call_user_func_array |     0.00018s |     0.00019s |                 -3.3% |
+|  call_user_func_array_through_class |        call_user_func_through_class |     0.00018s |     0.00019s |                -2.02% |
++-------------------------------------+-------------------------------------+--------------+--------------+-----------------------+
+|                      call_user_func |  call_user_func_array_through_class |     0.00018s |     0.00018s |                 -0.6% |
+|                      call_user_func |                         call_direct |     0.00018s |     0.00018s |                -0.76% |
+|                      call_user_func |           call_direct_through_class |     0.00018s |     0.00019s |                -2.34% |
+|                      call_user_func |                call_user_func_array |     0.00018s |     0.00019s |                -3.92% |
+|                      call_user_func |        call_user_func_through_class |     0.00018s |     0.00019s |                -2.63% |
++-------------------------------------+-------------------------------------+--------------+--------------+-----------------------+
+|                         call_direct |  call_user_func_array_through_class |     0.00018s |     0.00018s |                 0.16% |
+|                         call_direct |                      call_user_func |     0.00018s |     0.00018s |                 0.75% |
+|                         call_direct |           call_direct_through_class |     0.00018s |     0.00019s |                -1.57% |
+|                         call_direct |                call_user_func_array |     0.00018s |     0.00019s |                -3.14% |
+|                         call_direct |        call_user_func_through_class |     0.00018s |     0.00019s |                -1.86% |
++-------------------------------------+-------------------------------------+--------------+--------------+-----------------------+
+|           call_direct_through_class |  call_user_func_array_through_class |     0.00019s |     0.00018s |                  1.7% |
+|           call_direct_through_class |                      call_user_func |     0.00019s |     0.00018s |                 2.29% |
+|           call_direct_through_class |                         call_direct |     0.00019s |     0.00018s |                 1.54% |
+|           call_direct_through_class |                call_user_func_array |     0.00019s |     0.00019s |                -1.55% |
+|           call_direct_through_class |        call_user_func_through_class |     0.00019s |     0.00019s |                -0.29% |
++-------------------------------------+-------------------------------------+--------------+--------------+-----------------------+
+|                call_user_func_array |  call_user_func_array_through_class |     0.00019s |     0.00018s |                 3.19% |
+|                call_user_func_array |                      call_user_func |     0.00019s |     0.00018s |                 3.78% |
+|                call_user_func_array |                         call_direct |     0.00019s |     0.00018s |                 3.04% |
+|                call_user_func_array |           call_direct_through_class |     0.00019s |     0.00019s |                 1.52% |
+|                call_user_func_array |        call_user_func_through_class |     0.00019s |     0.00019s |                 1.24% |
++-------------------------------------+-------------------------------------+--------------+--------------+-----------------------+
+|        call_user_func_through_class |  call_user_func_array_through_class |     0.00019s |     0.00018s |                 1.98% |
+|        call_user_func_through_class |                      call_user_func |     0.00019s |     0.00018s |                 2.57% |
+|        call_user_func_through_class |                         call_direct |     0.00019s |     0.00018s |                 1.83% |
+|        call_user_func_through_class |           call_direct_through_class |     0.00019s |     0.00019s |                 0.29% |
+|        call_user_func_through_class |                call_user_func_array |     0.00019s |     0.00019s |                -1.26% |
++-------------------------------------+-------------------------------------+--------------+--------------+-----------------------+
 ```
