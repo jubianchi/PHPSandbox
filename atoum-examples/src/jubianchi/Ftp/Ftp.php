@@ -3,7 +3,8 @@ namespace jubianchi\Ftp;
 
 use
     jubianchi\Adapter\Adaptable,
-    jubianchi\Adapter\AdapterInterface
+    jubianchi\Adapter\AdapterInterface,
+    jubianchi\Ftp\Adapter\FtpAdapter
 ;
 
 class Ftp extends Adaptable
@@ -32,7 +33,7 @@ class Ftp extends Adaptable
      */
     public function getAdapter()
     {
-        return $this->adapter ?: new Adapter\Adapter();
+        return $this->adapter ?: new FtpAdapter();
     }
 
     /**

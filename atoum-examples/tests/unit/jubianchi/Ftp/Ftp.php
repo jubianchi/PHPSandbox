@@ -40,7 +40,7 @@ class Ftp extends atoum\test
             ->and($object = new \mock\jubianchi\Ftp\Ftp(null, $controller))
             ->and($object->setAdapter(null))
             ->then()
-                ->object($object->getAdapter())->isInstanceOf('\\jubianchi\\Ftp\\Adapter\\Adapter')
+                ->object($object->getAdapter())->isInstanceOf('\\jubianchi\\Ftp\\Adapter\\FtpAdapter')
 
             ->if($object->setAdapter($adapter = new \jubianchi\Adapter\Test\Adapter()))
             ->then()

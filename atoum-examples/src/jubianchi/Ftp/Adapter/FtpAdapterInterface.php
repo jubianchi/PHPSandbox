@@ -1,11 +1,11 @@
 <?php
-namespace jubianchi\Adapter\Ftp;
+namespace jubianchi\Ftp\Adapter;
 
 use
-    jubianchi\Adapter\Adapter as BaseAdapter
+    jubianchi\Adapter\AdapterInterface
 ;
 
-interface AdapterInterface
+interface FtpAdapterInterface extends AdapterInterface
 {
    function extension_loaded($name);
    function is_resource($var);

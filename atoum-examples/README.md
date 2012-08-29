@@ -271,4 +271,17 @@ Nous avons vu dans l'exemple précédent comment découpler facilement nos adapt
 au sein de notre projet : désormais, toutes nos classes nécessitant un adapter peuvent se reposer sur cette interface. Nous avons également mis en place une implémentation
 par défaut afin de répondre à un maximum de besoin rapidement et avec un minimum de code (souvenez-vous de la définition de Wikipedia).
 
-Cette implémentation a un inconvénient majeure : afin de combler un maximum de besoin, cette classe se base sur la fonction PHP ```call_user_func_array```.
+Cette implémentation a un inconvénient majeur : afin de combler un maximum de besoin, cette classe se base sur la fonction PHP ```call_user_func_array```. Dans
+certains cas, cette méthode peu être coûteuse en terme de temps d'exécution (voir mon benchmark [ici](https://github.com/jubianchi/PHPSandbox/tree/master/call_user_func)) :
+la différence est négligeable dans le cas de ce benchmark mais on remarque quand même des écart pouvant aller jusqu'à environ 5% !
+
+Pour corriger ce problème, il faut se plonger un peu plus dans la théorie du pattern ```Adapter``` : à la base, ce pattern a été imaginé dans le but
+d'abstraire d'une dépandence. Il va décrire, via son interface, les besoins de la classe cliente et, à travers ses différentes implémentations, y répondre.
+Donc, en théorie, votre code de production devrait dépendre d'un ```Adapter`` spécifique à chaque cas : dans notre exemple, la classe ```Ftp``` devrait dépendre d'un ```FtpAdapter```
+qui fournirait l'implémentation des méthodes nécessaires.
+
+### Attention aux abus
+
+Comme toute technique utilisée en programmation, les ```Adapters``` demandent à être utilisé avec précaution et surtout de manière judicieuse : il ne faut pas en abuser
+(par exemple, ne passez pas tous vos appels à ```sprintf``` par un ```Adapter``` : cela vous apportera certainement très peu de gain et dans la plupart des cas, ce sera inutile).
+Identifiez les cas où l'utilisation de ceux-ci vous apporte réellement un plus au niveau de la testabilité et/ou de l'architecture de vos composants.

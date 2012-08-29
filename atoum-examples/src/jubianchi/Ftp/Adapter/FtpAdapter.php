@@ -2,10 +2,11 @@
 namespace jubianchi\Ftp\Adapter;
 
 use
-    jubianchi\Adapter\Adapter as BaseAdapter
+    jubianchi\Adapter\Adapter,
+    jubianchi\Ftp\Adapter\FtpAdapterInterface
 ;
 
-class Adapter extends BaseAdapter
+class FtpAdapter extends Adapter implements FtpAdapterInterface
 {
     public function extension_loaded($name)
     {
