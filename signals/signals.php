@@ -70,7 +70,7 @@ $reset = function($string) {
 
 // The signals handler
 $handler = function($signal) use($signals, $format, $reset) {
-    print $reset($format(date() . 'Caught ' . $signals[$signal], 'error')) . PHP_EOL;
+    print $reset($format(date('Y-m-d H:i:s') . ' - Caught ' . $signals[$signal], 'error')) . PHP_EOL;
     exit($signal);
 };
 
@@ -106,6 +106,10 @@ while(true) {
     if(++$i > 40) {
         $i = 0;
     }
+    
+    if(fgets(STDIN) == "\n") {
+        echo 'ok';
+    }	
 
     sleep(1);
 }
