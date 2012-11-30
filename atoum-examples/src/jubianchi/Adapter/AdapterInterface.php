@@ -1,7 +1,8 @@
 <?php
 namespace jubianchi\Adapter;
 
-interface AdapterInterface
+use mageekguy\atoum\adapter\definition;
+
+interface AdapterInterface extends definition
 {
-    public function invoke($name, array $args = array());
 }
