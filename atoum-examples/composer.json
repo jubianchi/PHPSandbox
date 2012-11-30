@@ -14,10 +14,10 @@
     },
     "minimum-stability": "dev",
     "require": {
-        "php": ">=5.3.2"
+        "php": ">=5.3.3"
     },
     "require-dev": {
-        "mageekguy/atoum": "dev-master"
+        "atoum/atoum": "dev-master"
     },
     "config": {
         "bin-dir": "bin"
