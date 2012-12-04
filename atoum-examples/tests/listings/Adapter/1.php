@@ -5,7 +5,7 @@ namespace tests\unit {
         Ftp as TestedClass
     ;
 
-    require_once __DIR__ . '/../../vendor/autoload.php';
+    require_once __DIR__ . '/../../../vendor/autoload.php';
 
     class Ftp extends atoum\test {
         public function test__construct() {
