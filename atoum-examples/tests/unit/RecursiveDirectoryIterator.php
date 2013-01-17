@@ -4,6 +4,7 @@ namespace tests\unit;
 use
     mageekguy\atoum,
     mageekguy\atoum\mock\stream,
+    mageekguy\atoum\mock\streams\file,
     DirectoryIterator as TestedClass
 ;
 
@@ -16,10 +17,8 @@ class RecursiveDirectoryIterator extends atoum\test
         $this
             ->if($directory = null)
             ->mockFilesystem()
-                ->directory('directory')
-                    ->referencedBy($directory)
-                ->close()
-            ->close()
+                ->directory('directory')->create($directory)
+            ->create()
             ->and(is_dir($directory))
             ->then
                 ->directory($directory)
@@ -32,9 +31,7 @@ class RecursiveDirectoryIterator extends atoum\test
     {
         $this
             ->if($filesystem = null)
-            ->mockFilesystem()
-                ->referencedBy($filesystem)
-            ->close()
+            ->mockFilesystem()->create($filesystem)            
             ->and($directory = $filesystem . DIRECTORY_SEPARATOR . 'directory')
             ->and(mkdir($directory))
             ->then
@@ -49,10 +46,8 @@ class RecursiveDirectoryIterator extends atoum\test
         $this
             ->if($directory = null)
             ->mockFilesystem()
-                ->directory('directory')
-                    ->referencedBy($directory)
-                ->close()
-            ->close()
+                ->directory('directory')->create($directory)                
+            ->create()
             ->and(rmdir($directory))
             ->then
                 ->directory($directory)
@@ -67,13 +62,10 @@ class RecursiveDirectoryIterator extends atoum\test
         $this
             ->if($directory = $subdirectory = null)
             ->mockFilesystem()
-                ->directory('directory')
-                    ->referencedBy($directory)
-                    ->directory('subdirectory')
-                        ->referencedBy($subdirectory)
-                    ->close()
-                ->close()
-            ->close()
+                ->directory('directory')                    
+                    ->directory('subdirectory')->create($subdirectory)
+                ->create($directory)
+            ->create()
             ->and(is_dir($directory))
             ->and(is_dir($subdirectory))
             ->then
@@ -91,13 +83,10 @@ class RecursiveDirectoryIterator extends atoum\test
         $this
             ->if($directory = $subdirectory = null)
             ->mockFilesystem()
-                ->directory('directory')
-                    ->referencedBy($directory)
-                    ->directory('subdirectory')
-                        ->referencedBy($subdirectory)
-                    ->close()
-                ->close()
-            ->close()
+                ->directory('directory')                    
+                    ->directory('subdirectory')->create($subdirectory)
+                ->create($directory)
+            ->create()
             ->and(is_dir($directory))
             ->and(rmdir($subdirectory))
             ->then
@@ -118,10 +107,8 @@ class RecursiveDirectoryIterator extends atoum\test
         $this
             ->if($file = null)
             ->mockFilesystem()
-                ->file('file')
-                    ->referencedBy($file)
-                ->close()
-            ->close()
+                ->file('file')->create($file)
+            ->create()
             ->then
                 ->variable($file)->isNotNull()
                 ->boolean(is_dir($file))->isFalse()
@@ -135,11 +122,8 @@ class RecursiveDirectoryIterator extends atoum\test
     {
         $this
             ->if($filesystem = null)
-            ->mockFilesystem()
-                ->referencedBy($filesystem)
-            ->close()
-            ->and($file = $filesystem . DIRECTORY_SEPARATOR . uniqid())
-            ->and(fopen($file, 'w+'))
+            ->mockFilesystem()->create($filesystem)                     
+            ->and(fopen($file = $filesystem . DIRECTORY_SEPARATOR . uniqid(), 'w+'))            
             ->then
                 ->adapter(stream::get($file))
                     ->call('stream_open')->once()
@@ -158,6 +142,13 @@ class RecursiveDirectoryIterator extends atoum\test
                 })
                     ->isInstanceOf('\\mageekguy\\atoum\\exceptions\\logic')
                     ->hasMessage('Stream \'' . $file . '\' already exists')
+            ->if(unlink($file))
+            ->then
+                ->boolean(is_file($file))->isFalse()
+            ->if(fopen($file, 'x+'))
+            ->then
+                ->adapter(stream::get($file))
+                    ->call('stream_open')->once()
         ;
     }
 
@@ -166,10 +157,8 @@ class RecursiveDirectoryIterator extends atoum\test
         $this
             ->if($file = null)
             ->mockFilesystem()
-                ->file('file')
-                    ->referencedBy($file)
-                ->close()
-            ->close()
+                ->file('file')->create($file)
+            ->create()
             ->and(unlink($file))
             ->then
                 ->variable($file)->isNotNull()
@@ -186,15 +175,11 @@ class RecursiveDirectoryIterator extends atoum\test
             ->if($directory = $subdirectory = $file = null)
             ->mockFilesystem()
                 ->directory('directory')
-                    ->referencedBy($directory)
-                    ->directory('subdirectory')
-                        ->referencedBy($subdirectory)
-                        ->file('file')
-                            ->referencedBy($file)
-                        ->close()
-                    ->close()
-                ->close()
-            ->close()
+                    ->directory('subdirectory')                        
+                        ->file('file')->create($file)
+                    ->create($subdirectory)
+                ->create($directory)
+            ->create()
             ->and(is_file($file))
             ->then
                 ->adapter($file->getStream())
@@ -207,16 +192,12 @@ class RecursiveDirectoryIterator extends atoum\test
         $this
             ->if($directory = $subdirectory = $file = null)
             ->mockFilesystem()
-                ->directory('directory')
-                    ->referencedBy($directory)
-                    ->directory('subdirectory')
-                        ->referencedBy($subdirectory)
-                        ->file('file')
-                            ->referencedBy($file)
-                        ->close()
-                    ->close()
-                ->close()
-            ->close()
+                ->directory('directory')                    
+                    ->directory('subdirectory')                        
+                        ->file('file')->create($file)
+                    ->create($subdirectory)
+                ->create($directory)
+            ->create()
             ->and(unlink($file))
             ->then
                 ->adapter($file->getStream())
@@ -228,23 +209,17 @@ class RecursiveDirectoryIterator extends atoum\test
     {
         $this
             ->if($filesystem = $directory = $otherDirectory = $subdirectory = $file = $foobar = null)
-            ->mockFilesystem(uniqid())
-                ->referencedBy($filesystem)
-                ->directory(uniqid())
-                    ->referencedBy($directory)
-                ->close()
-                ->directory(uniqid())
-                    ->referencedBy($otherDirectory)
-                    ->directory(uniqid())
-                        ->referencedBy($subdirectory)
-                        ->directory(uniqid())->close()
-                        ->file(uniqid())
-                            ->referencedBy($file)
+            ->mockFilesystem(uniqid())                
+                ->directory(uniqid())->create($directory)                
+                ->directory(uniqid())                    
+                    ->directory(uniqid())                        
+                        ->directory(uniqid())->create()
+                        ->file(uniqid())                            
                             ->content($content = uniqid())
-                        ->close()
-                    ->close()
-                ->close()
-            ->close()
+                        ->create($file)
+                    ->create($subdirectory)
+                ->create($otherDirectory)
+            ->create($filesystem)
             ->and($object = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($filesystem)))
             ->and(call_user_func(function() use($object) { foreach($object as $v) {} }))
             ->then
