@@ -68,7 +68,7 @@ class Test extends atoum
         ;
     }
 
-    public function TESTpRASPEL()
+    public function testPraspel()
     {
         $this
             ->if($praspel = new \mock\Hoa\Praspel())
