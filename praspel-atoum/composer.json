@@ -1,0 +1,28 @@
+{
+    "name": "praspel-atoum",
+    "type": "script",
+    "description": "",
+    "authors": [
+        {
+            "name": "Julien Bianchi",
+            "email": "contact@jubianchi.fr",
+            "homepage": "http://jubianchi.fr"
+        }
+    ],
+    "autoload": {
+        "psr-0": { "": "src/" }
+    },
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.3.3"
+    },
+    "require-dev": {
+	    "hoathis/atoum": "dev-master"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git://github.com/jubianchi/Hoathis-Atoum.git"
+        }
+    ]
+}
