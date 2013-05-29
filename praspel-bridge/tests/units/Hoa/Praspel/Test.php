@@ -20,8 +20,8 @@ class Test extends atoum
         $this
             ->if($object = new TestedClass())
             ->then
-                ->object($object->getPraspel())->isInstanceOf('\\Hoa\\Praspel')
-            ->if($praspel = new \mock\Hoa\Praspel())
+                ->object($object->getPraspel())->isInstanceOf('\\Hoa\\Praspel\\Asserters\\Praspel')
+            ->if($praspel = new \mock\Hoa\Praspel\Asserters\Praspel())
             ->and($object = new TestedClass($praspel))
             ->then
                 ->object($object->getPraspel())->isIdenticalTo($praspel)
@@ -40,8 +40,8 @@ class Test extends atoum
             ->if($object = new TestedClass())
             ->then
                 ->object($object->setPraspel())->isIdenticalTo($object)
-                ->object($object->getPraspel())->isInstanceOf('\\Hoa\\Praspel')
-            ->if($praspel = new \mock\Hoa\Praspel())
+                ->object($object->getPraspel())->isInstanceOf('\\Hoa\\Praspel\\Asserters\\Praspel')
+            ->if($praspel = new \mock\Hoa\Praspel\Asserters\Praspel())
             ->then
                 ->object($object->setPraspel($praspel))->isIdenticalTo($object)
                 ->object($object->getPraspel())->isIdenticalTo($praspel)
@@ -63,7 +63,7 @@ class Test extends atoum
     public function testHandlers()
     {
         $this
-            ->if($praspel = new \mock\Hoa\Praspel())
+            ->if($praspel = new \mock\Hoa\Praspel\Asserters\Praspel())
             ->and($object = new TestedClass($praspel, null, null))
             ->then
                 ->object($ensures = $object->ensures(uniqid()))->isInstanceOf('\\Hoa\\Praspel\\Asserters\\Ensures')

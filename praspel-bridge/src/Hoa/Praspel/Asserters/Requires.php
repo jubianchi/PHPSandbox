@@ -9,6 +9,6 @@ class Requires  extends Asserter
     {
         $this->getSpecification()->getClause('requires')->in = $in;
 
-        return $this;
+        return $this->pass();
     }
 }

@@ -11,9 +11,16 @@ class Asserter extends atoum\asserter
 
     public function __construct(Model\Specification $specification = null, atoum\asserter\generator $generator = null)
     {
-        $this->specification = $specification ?: new Model\Specification();
+        $this->setSpecification($specification);
 
         parent::__construct($generator);
+    }
+
+    public function setSpecification(Model\Specification $specification = null)
+    {
+        $this->specification = $specification ?: new Model\Specification();
+
+        return $this;
     }
 
     public function getSpecification()

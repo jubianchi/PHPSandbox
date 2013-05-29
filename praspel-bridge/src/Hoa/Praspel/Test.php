@@ -7,12 +7,13 @@ use mageekguy\atoum\adapter;
 use mageekguy\atoum\annotations;
 use mageekguy\atoum\asserter;
 use Hoa;
+use Hoa\Praspel\Asserters;
 
 class Test extends atoum\test
 {
     protected $praspel;
 
-    public function __construct(Hoa\Praspel $praspel = null, adapter $adapter = null, annotations\extractor $annotationExtractor = null, asserter\generator $asserterGenerator = null, assertion\manager $assertionManager = null, \closure $reflectionClassFactory = null)
+    public function __construct(Asserters\Praspel $praspel = null, adapter $adapter = null, annotations\extractor $annotationExtractor = null, asserter\generator $asserterGenerator = null, assertion\manager $assertionManager = null, \closure $reflectionClassFactory = null)
     {
         $this
             ->setAssertionManager($assertionManager)
@@ -23,9 +24,9 @@ class Test extends atoum\test
         parent::__construct($adapter, $annotationExtractor, $this->getAsserterGenerator(), $this->getAssertionManager(), $reflectionClassFactory);
     }
 
-    public function setPraspel(Hoa\Praspel $praspel = null)
+    public function setPraspel(Asserters\Praspel $praspel = null)
     {
-        $this->praspel = $praspel ?: new Hoa\Praspel();
+        $this->praspel = $praspel ?: new Asserters\Praspel();
         $this->praspel->setGenerator($this->getAsserterGenerator());
 
         return $this;

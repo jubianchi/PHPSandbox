@@ -9,6 +9,6 @@ class Ensures extends Asserter
     {
         $this->getSpecification()->getClause('ensures')->in = $in;
 
-        return $this;
+        return $this->pass();
     }
 }
