@@ -1,4 +1,3 @@
-```php
 <?php
 namespace tests\units\Hoa;
 
@@ -27,5 +26,3 @@ class Foo extends Test
         ;
     }
 }
-
-```

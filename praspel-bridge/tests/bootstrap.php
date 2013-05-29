@@ -29,4 +29,15 @@ namespace {
             'runner.php'
         )
     );
+
+    class RD {
+        public function boundinteger() {}
+        public function boolean() {}
+
+        public function __call($m, $a) {}
+    }
+
+    function realdom() {
+        return new RD();
+    }
 }

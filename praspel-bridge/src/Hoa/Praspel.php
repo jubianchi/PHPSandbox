@@ -51,7 +51,7 @@ class Praspel
 
     public function reset()
     {
-        $this->specification = new Model\Specification();
+        return $this->setSpecification();
     }
 
     public function setSpecification(Model\Specification $specification = null)

@@ -46,6 +46,7 @@ class Test extends atoum\test
             ->sethandler('praspel', function() use ($self) { return $self->getPraspel()->reset(); })
             ->sethandler('requires', function($value) use ($self) { return $self->getPraspel()->requires($value); })
             ->sethandler('ensures', function($value) use ($self) { return $self->getPraspel()->ensures($value); })
+            ->sethandler('verdict', function() use ($self) { return $self->getPraspel()->verdict(); })
         ;
 
         return $this;

@@ -7,6 +7,8 @@ class Ensures extends Asserter
 {
     public function in($in)
     {
-        return $this->getSpecification()->getClause('ensures')->in = $in;
+        $this->getSpecification()->getClause('ensures')->in = $in;
+
+        return $this;
     }
 }
