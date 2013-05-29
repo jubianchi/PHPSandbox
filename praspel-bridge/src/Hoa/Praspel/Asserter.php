@@ -9,6 +9,18 @@ class Asserter extends atoum\asserter
     protected $value;
     protected $isSet;
 
+    public function __construct(Model\Specification $specification = null, atoum\asserter\generator $generator = null)
+    {
+        $this->specification = $specification ?: new Model\Specification();
+
+        parent::__construct($generator);
+    }
+
+    public function getSpecification()
+    {
+        return $this->specification;
+    }
+
     public function setWith($mixed)
     {
         $this->value = $mixed;

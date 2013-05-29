@@ -32,12 +32,12 @@ class Praspel
 
     public function ensures()
     {
-        return new Hoa\Praspel\Asserters\Ensures($this->getGenerator());
+        return new Hoa\Praspel\Asserters\Ensures($this->getSpecification(), $this->getGenerator());
     }
 
     public function requires()
     {
-        return new Hoa\Praspel\Asserters\Requires($this->getGenerator());
+        return new Hoa\Praspel\Asserters\Requires($this->getSpecification(), $this->getGenerator());
     }
 
     public function verdict($message = null)
@@ -63,6 +63,6 @@ class Praspel
 
     public function getSpecification()
     {
-        return $this->setSpecification();
+        return $this->specification;
     }
 }

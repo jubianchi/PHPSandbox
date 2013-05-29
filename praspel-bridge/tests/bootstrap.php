@@ -2,6 +2,7 @@
 namespace Hoa\Praspel\Model {
     class Specification {
         public function verdict() {}
+        public function getClause() { return new \StdClass; }
     }
 }
 

@@ -21,10 +21,13 @@ class Asserter extends atoum
             ->if($object = new TestedClass())
             ->then
                 ->object($object->getGenerator())->isInstanceOf('\\mageekguy\\atoum\\asserter\\generator')
+                ->object($object->getSpecification())->isInstanceOf('\\Hoa\\Praspel\\Model\\Specification')
             ->if($generator = new \mock\mageekguy\atoum\asserter\generator())
-            ->and($object = new TestedClass($generator))
+            ->and($specification = new \mock\Hoa\Praspel\Model\Specification())
+            ->and($object = new TestedClass($specification, $generator))
             ->then
                 ->object($object->getGenerator())->isIdenticalTo($generator)
+                ->object($object->getSpecification())->isIdenticalTo($specification)
         ;
     }
 }
