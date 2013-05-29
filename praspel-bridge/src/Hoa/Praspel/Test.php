@@ -15,15 +15,18 @@ class Test extends atoum\test
     public function __construct(Hoa\Praspel $praspel = null, adapter $adapter = null, annotations\extractor $annotationExtractor = null, asserter\generator $asserterGenerator = null, assertion\manager $assertionManager = null, \closure $reflectionClassFactory = null)
     {
         $this
-            ->setPraspel($praspel);
+            ->setAssertionManager($assertionManager)
+            ->setAsserterGenerator($asserterGenerator)
+            ->setPraspel($praspel)
         ;
 
-        parent::__construct($adapter, $annotationExtractor, $asserterGenerator, $assertionManager, $reflectionClassFactory);
+        parent::__construct($adapter, $annotationExtractor, $this->getAsserterGenerator(), $this->getAssertionManager(), $reflectionClassFactory);
     }
 
     public function setPraspel(Hoa\Praspel $praspel = null)
     {
         $this->praspel = $praspel ?: new Hoa\Praspel();
+        $this->praspel->setGenerator($this->getAsserterGenerator());
 
         return $this;
     }
@@ -38,11 +41,11 @@ class Test extends atoum\test
         parent::setAssertionManager($assertionManager);
 
         $self = $this;
-        $praspel = $this->getPraspel();
 
         $this->getAssertionManager()
-            ->sethandler('praspel', function() use ($praspel) { return $praspel; })
-            ->sethandler('predicate', function() use ($self) { $self->praspel->doStuff(); return $this; })
+            ->sethandler('praspel', function() use ($self) { return $self->getPraspel()->reset(); })
+            ->sethandler('requires', function($value) use ($self) { return $self->getPraspel()->requires($value); })
+            ->sethandler('ensures', function($value) use ($self) { return $self->getPraspel()->ensures($value); })
         ;
 
         return $this;
