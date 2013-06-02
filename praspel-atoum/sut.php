@@ -1,25 +1,22 @@
 <?php
 
-require_once __DIR__ . '/vendor/autoload.php';
-require_once __DIR__ . '/vendor/hoa/core/Core.php';
-
-from('Hoathis')
-    -> import('Atoum.Praspel.Generator');
-
-class A {
-
+class Sut
+{
     /**
      * @requires x: 0..256 and y: 'foo';
-     * @ensures  \result: boolean();
+     * @ensures  \result: false;
      */
-    public function m1 ( $x, $y ) { }
+    public function m1($x, $y)
+	{
+		return ($x <= 256 && $y === 'foo');
+	}
 
     /**
      * @requires x: 'foo';
      * @ensures  \result: 'bar';
      */
-    public function m2 ( $x ) { }
+    public function m2($x)
+	{
+		return $x === 'foo' ? 'bar' : 'baz';
+	}
 }
-
-$generator = new Hoathis\Atoum\Praspel\Generator();
-echo $generator->generate(new \ReflectionClass('A'));

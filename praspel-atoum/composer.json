@@ -22,7 +22,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "git://github.com/jubianchi/Hoathis-Atoum.git"
+            "url": "/Users/jubianchi/repositories/hoaproject/Hoathis-Atoum"
         }
     ]
 }
